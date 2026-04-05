@@ -1,7 +1,7 @@
 from datetime import datetime
 from decimal import Decimal
-from src.enums.transaction_status import *
-from src.enums.transaction_type import *
+from src.app.enums.transaction_status import *
+from src.app.enums.transaction_type import *
 
 class Transaction:
 

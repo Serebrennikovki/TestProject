@@ -1,6 +1,6 @@
-from src.enums.task_status import TaskStatus
-from src.models.ml_model import MlModel
-from src.models.user import User
+from src.app.enums.task_status import TaskStatus
+from src.app.models.ml_model import MlModel
+from src.app.models.user import User
 
 class MlTask:
     def __init__(self, id_task, input_data, launch_method, status, model, user):

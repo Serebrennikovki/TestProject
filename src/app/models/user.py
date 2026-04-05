@@ -1,4 +1,4 @@
-from src.enums.roles import Roles
+from src.app.enums.roles import Roles
 
 class User:
     def __init__(self, user_id, login, password, name, role):

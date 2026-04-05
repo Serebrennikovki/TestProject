@@ -1,4 +1,4 @@
-from src.models.user import User
+from src.app.models.user import User
 from decimal import Decimal
 
 

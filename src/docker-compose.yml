@@ -1,0 +1,41 @@
+services:
+  app:
+    image: test-project-app
+    volumes:
+      - ./app:/app
+    command: python main.py
+
+  web-proxy:
+    image: nginx:alpine
+    volumes:
+      - ./web-proxy/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - app
+
+  rabbitmq:
+    image: rabbitmq:4.2.0-management-alpine # Образ с панелью управления
+    container_name: rabbitmq
+    ports:
+      - "15672:15672"   # Порт для приложений (AMQP)
+      - "5672:5672" # Порт для веб-интерфейса
+    environment:
+      RABBITMQ_DEFAULT_USER: user    # Логин
+      RABBITMQ_DEFAULT_PASS: password # Пароль
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq # Сохранение данных при перезапуске
+    restart: on-failure
+
+  db:
+    image: postgres:18.3-alpine3.23
+    environment:
+        POSTGRES_USER: "user"
+        POSTGRES_PASSWORD: "password"
+    volumes:
+        - db_data:/var/lib/postgresql/data
+    ports:
+        - "5432:5432"
+
+
+volumes:
+  rabbitmq_data:
+  db_data:
