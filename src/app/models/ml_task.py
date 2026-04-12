@@ -1,39 +1,24 @@
-from src.app.enums.task_status import TaskStatus
-from src.app.models.ml_model import MlModel
-from src.app.models.user import User
+# from src.app.enums.task_status import TaskStatus
+# from src.app.models.ml_model import MlModel
+# from src.app.models.user import User
+#
+#
+#     def change_status(self, status: TaskStatus):
+#         self._status = status
+from typing import Optional
 
-class MlTask:
-    def __init__(self, id_task, input_data, launch_method, status, model, user):
-        self._id: int = id_task
-        self._input_data: str = input_data
-        self._launch_method: str = launch_method
-        self._status: TaskStatus = status
-        self._ml_model: MlModel = model
-        self._user: User = user
+from sqlmodel import SQLModel, Field
+from .enums import TaskStatus
+from .ml_model import MLModel
+from .user import User
 
-    @property
-    def id(self):
-        return self._id
 
-    @property
-    def input_data(self):
-        return self._input_data
+class MlTask(SQLModel, table=True):
+    __tablename__ = "ml_tasks"
 
-    @property
-    def launch_method(self):
-        return self._launch_method
-
-    @property
-    def status(self):
-        return self._status
-
-    @property
-    def model(self):
-        return self._ml_model
-
-    @property
-    def user(self):
-        return self._user
-
-    def change_status(self, status: TaskStatus):
-        self._status = status
+    id: Optional[int] = Field(default=None, primary_key=True)
+    input_data:str
+    launch_method: str
+    status: TaskStatus
+    ml_model: int = Field(default=None, foreign_key='ml_models.id')
+    user: int = Field(default=None, foreign_key='users.id')

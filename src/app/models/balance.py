@@ -1,22 +1,22 @@
-from src.app.models.user import User
+# from src.app.models.user import User
+# from decimal import Decimal
+#
+#
+# class Balance:
+#     def __init__(self, user: User):
+#         self._user: User = user
+#         self.__balance: Decimal = Decimal(0)
+#
+
 from decimal import Decimal
+from typing import Optional
+
+from sqlmodel import SQLModel, Field
 
 
-class Balance:
-    def __init__(self, user: User):
-        self._user: User = user
-        self.__balance: Decimal = Decimal(0)
+class Balance(SQLModel, table=True):
+    __tablename__ = "balances"
 
-    @property
-    def user(self):
-        return self._user
-
-    @property
-    def balance(self):
-        return self.__balance
-
-    def deposit(self, balance):
-        self.__balance =  self.__balance + balance
-
-    def check_balance_for_operation(self, credit_balance: Decimal):
-        return self.__balance - credit_balance > 0
+    id: Optional[int] = Field(default=None, primary_key=True)
+    balance: Decimal = Field(default=0, nullable=False)
+    user_id: int = Field(default=None, foreign_key='users.id', index=True)
