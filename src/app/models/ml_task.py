@@ -1,10 +1,3 @@
-# from src.app.enums.task_status import TaskStatus
-# from src.app.models.ml_model import MlModel
-# from src.app.models.user import User
-#
-#
-#     def change_status(self, status: TaskStatus):
-#         self._status = status
 from typing import Optional
 
 from sqlmodel import SQLModel, Field

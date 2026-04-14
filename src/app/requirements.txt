@@ -6,3 +6,6 @@ pydantic==2.12.5
 pydantic_core==2.41.5
 psycopg==3.1.10
 psycopg-binary==3.1.10
+passlib==1.7.4
+argon2-cffi >= 24.1.0
+argon2-cffi-bindings >= 24.1.0

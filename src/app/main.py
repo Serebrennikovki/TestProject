@@ -8,6 +8,8 @@ from models.enums import Roles, TransactionType, TransactionStatus
 from services.repositories.user import create_user, get_all_users
 from services.repositories.balance import add_balance, credit_balance_by_user, check_balance, deposit_balance_by_user
 from services.repositories.transaction import add_transaction, update_status_transaction
+from core.security import hash_password
+
 print("service alive")
 
 def deposit(user_id: int, amount: Decimal) -> None:
@@ -29,9 +31,9 @@ init_db()
 print('Init db has been success')
 
 
-test_user_0 = User(login='test0', password='test0', name='test0', role=Roles.Administrator)
-test_user_1 = User(login='test1', password='test1', name='test1', role=Roles.User)
-test_user_2 = User(login='test2', password='test2', role=Roles.User)
+test_user_0 = User(login='test0', password=hash_password('test0'), name='test0', role=Roles.Administrator)
+test_user_1 = User(login='test1', password=hash_password('test1'), name='test1', role=Roles.User)
+test_user_2 = User(login='test2', password=hash_password('test2'), role=Roles.User)
 
 with Session(engine) as session:
     test_user_0 = create_user(test_user_0, session)

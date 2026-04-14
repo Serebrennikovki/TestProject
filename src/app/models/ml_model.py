@@ -1,13 +1,3 @@
-# from decimal import Decimal
-#
-# class MlModel:
-#     def __init__(self, id_model, name, description, price, method):
-#         self._id: int = id_model
-#         self._name: str = name
-#         self._description: str = description
-#         self._price: Decimal = price
-#         self._method_execution: str = method
-#
 from typing import Optional
 
 from sqlmodel import SQLModel, Field

@@ -1,5 +1,6 @@
 from typing import List
 from sqlmodel import Session, select
+import hashlib
 
 from models import User
 

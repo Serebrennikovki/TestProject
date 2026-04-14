@@ -1,13 +1,3 @@
-# from src.app.models.user import User
-# from decimal import Decimal
-#
-#
-# class Balance:
-#     def __init__(self, user: User):
-#         self._user: User = user
-#         self.__balance: Decimal = Decimal(0)
-#
-
 from decimal import Decimal
 from typing import Optional
 
