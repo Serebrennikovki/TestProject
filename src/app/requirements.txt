@@ -9,3 +9,5 @@ psycopg-binary==3.1.10
 passlib==1.7.4
 argon2-cffi >= 24.1.0
 argon2-cffi-bindings >= 24.1.0
+uvicorn
+fastapi

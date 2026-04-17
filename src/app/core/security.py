@@ -5,7 +5,7 @@ pwd_context = CryptContext(
     deprecated="auto",
     argon__time_cost=3,
     argon__memory_cost=65536,
-    argon__parallelism=65536)
+    argon__parallelism=3)
 
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)

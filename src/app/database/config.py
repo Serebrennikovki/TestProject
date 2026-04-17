@@ -10,6 +10,10 @@ class Settings(BaseSettings):
     DB_PASS: Optional[str] = None
     DB_NAME: Optional[str] = None
 
+    APP_NAME: Optional[str] = None
+    APP_DESCRIPTION: Optional[str] = None
+    API_VERSION: Optional[str] = None
+
     @property
     def DATABASE_URL_asyncpg(self):
         return f'postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}'

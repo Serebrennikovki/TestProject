@@ -6,8 +6,10 @@ class Roles(Enum):
 
 class TaskStatus(Enum):
     New = 1
-    InProgress = 2
-    Completed = 3
+    Waiting = 2
+    InProgress = 3
+    Completed = 4
+    Canceled = 5
 
 class TransactionType(Enum):
     Credit = 1
