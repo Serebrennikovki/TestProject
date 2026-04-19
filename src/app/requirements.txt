@@ -11,3 +11,4 @@ argon2-cffi >= 24.1.0
 argon2-cffi-bindings >= 24.1.0
 uvicorn
 fastapi
+pika

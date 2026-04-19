@@ -1,7 +1,9 @@
 from datetime import datetime
 from decimal import Decimal
-
+import logging
 from fastapi import APIRouter, Depends, HTTPException, status
+
+from services.queue.rabbitmq_connector import send_to_queue
 from services.repositories import user as UserService
 from services.repositories import ml_task as MLService
 from DTO.ml_task_create_request import MlTaskCreateRequest
@@ -10,8 +12,11 @@ from models import MlTask, TaskStatus, Transaction, TransactionType, Transaction
 from DTO.ml_task_update_request import MlTaskUpdateRequest
 from services.repositories import transaction as TransactionService
 from services.repositories import balance as BalanceService
+from DTO.ml_task_queue import MlTaskQueueRequest
 
 predict_route = APIRouter()
+
+logger = logging.getLogger(__file__)
 
 PRICE: Decimal = Decimal(5)
 
@@ -36,6 +41,8 @@ async def predict(data: MlTaskCreateRequest, session=Depends(get_session)):
         TransactionService.update_status_transaction(transaction.id, TransactionStatus.Done, session)
         task.status = TaskStatus.Waiting
         task = MLService.merge_task(task, session)
+        task_to_queue = MlTaskQueueRequest(id=task.id, input_data=task.input_data)
+        send_to_queue(task_to_queue)
     else:
         # при отрицательном балансе отмена транзакции
         TransactionService.update_status_transaction(transaction.id, TransactionStatus.Canceled, session)
@@ -47,10 +54,11 @@ async def predict(data: MlTaskCreateRequest, session=Depends(get_session)):
     status_code=status.HTTP_200_OK,
     response_model = int)
 async def update_predict(data: MlTaskUpdateRequest, session=Depends(get_session)):
-
+    logger.info(f'запрос {data}')
     task = MLService.get_task_by_id(task_id = data.id, session=session)
     if task is None:
         raise HTTPException(status_code=404, detail="Task not found")
     task.answer = data.answer
+    task.status = data.status
     task = MLService.merge_task(task,session)
     return task.status

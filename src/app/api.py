@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from database.config import get_settings
 import logging
 from routes.auth import auth_route
+from routes.queue import queue_route
 from routes.user import user_route
 from routes.balance import balance_route
 from routes.home import home_route
@@ -11,6 +12,11 @@ from routes.predict import predict_route
 
 from database.database import init_db
 from routes.history import history_route
+
+logging.basicConfig(
+    level=logging.INFO,  # 👈 Уровень INFO и выше будет выводиться
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
@@ -38,6 +44,7 @@ def create_application() -> FastAPI:
     app.include_router(predict_route, prefix="/api/predicts", tags=["Predict"])
     app.include_router(home_route, prefix="/api/home", tags=["Home"])
     app.include_router(history_route, prefix="/api/history", tags=["History"])
+    app.include_router(queue_route, prefix="/api/queue", tags=["Queue"])
 
     return app
 
