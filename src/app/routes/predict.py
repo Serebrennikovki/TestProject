@@ -13,6 +13,7 @@ from DTO.ml_task_update_request import MlTaskUpdateRequest
 from services.repositories import transaction as TransactionService
 from services.repositories import balance as BalanceService
 from DTO.ml_task_queue import MlTaskQueueRequest
+from DTO.ml_task_update_request_simple import MlTaskUpdateRequestSimple
 
 predict_route = APIRouter()
 
@@ -61,4 +62,34 @@ async def update_predict(data: MlTaskUpdateRequest, session=Depends(get_session)
     task.answer = data.answer
     task.status = data.status
     task = MLService.merge_task(task,session)
+    return task.status
+
+@predict_route.post("/update/positive",
+    status_code=status.HTTP_200_OK,
+    response_model = int)
+async def update_predict(data: MlTaskUpdateRequestSimple, session=Depends(get_session)):
+    logger.info(f'запрос {data}')
+    task = MLService.get_task_by_id(task_id = data.id, session=session)
+    if task is None:
+        raise HTTPException(status_code=404, detail="Task not found")
+    task.answer = data.answer
+    task.status = TaskStatus.Completed
+    task = MLService.merge_task(task,session)
+    return task.status
+
+@predict_route.post("/update/negative",
+    status_code=status.HTTP_200_OK,
+    response_model = int)
+async def update_predict(data: MlTaskUpdateRequestSimple, session=Depends(get_session)):
+    logger.info(f'запрос {data}')
+    task = MLService.get_task_by_id(task_id = data.id, session=session)
+    if task is None:
+        raise HTTPException(status_code=404, detail="Task not found")
+    task.status = TaskStatus.UnsuccessfullCompleted
+    task = MLService.merge_task(task,session)
+    transaction = Transaction(type=TransactionType.Refund, date=datetime.now(), cost=PRICE,
+                              status=TransactionStatus.New, user_id=task.user_id)
+    transaction = TransactionService.add_transaction(transaction, session)
+    BalanceService.deposit_balance_by_user(PRICE, task.user_id, session)
+    TransactionService.update_status_transaction(transaction.id, TransactionStatus.Done, session)
     return task.status

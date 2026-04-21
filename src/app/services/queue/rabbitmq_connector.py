@@ -3,17 +3,20 @@ import logging
 import json
 from pydantic import BaseModel
 
+from database.config import get_settings
+
 QUEUE_NAME = "ml_task_queue"
+settings = get_settings()
 
 logger = logging.getLogger(__file__)
 
 connection_params = pika.ConnectionParameters(
-    host='rabbitmq',
-    port=5672,         # Порт по умолчанию для RabbitMQ
+    host=settings.RABBITMQ_HOST,
+    port=settings.RABBITMQ_PORT,         # Порт по умолчанию для RabbitMQ
     virtual_host='/',   # Виртуальный хост (обычно '/')
     credentials=pika.PlainCredentials(
-        username='user',  # Имя пользователя по умолчанию
-        password='password'
+        username=settings.RABBITMQ_USER,  # Имя пользователя по умолчанию
+        password=settings.RABBITMQ_PASS,
     ),
     heartbeat=30,
     blocked_connection_timeout=10,

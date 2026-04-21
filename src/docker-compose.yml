@@ -21,8 +21,8 @@ services:
     image: rabbitmq:4.2.0-management-alpine # Образ с панелью управления
     container_name: rabbitmq
     ports:
-      - "15672:15672"   # Порт для приложений (AMQP)
-      - "5672:5672" # Порт для веб-интерфейса
+      - "15672:15672"   # Порт ui-менеджмент
+      - "5672:5672" # Порт для приложений (AMQP)
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}    # Логин
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS} # Пароль
@@ -51,7 +51,18 @@ services:
       - rabbitmq
     deploy:
       replicas: ${WORKER_AMOUNT}
+  ollama:
+    image: ollama/ollama
+    container_name: gemma-server
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+    environment:
+      - OLLAMA_MODELS=gemma3:1b
 
 
 volumes:
   rabbitmq_data:
+  ollama_data:

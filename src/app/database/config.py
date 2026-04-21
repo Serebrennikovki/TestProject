@@ -14,6 +14,11 @@ class Settings(BaseSettings):
     APP_DESCRIPTION: Optional[str] = None
     API_VERSION: Optional[str] = None
 
+    RABBITMQ_USER: Optional[str] = None
+    RABBITMQ_PASS: Optional[str] = None
+    RABBITMQ_HOST: Optional[str] = None
+    RABBITMQ_PORT: Optional[int] = None
+
     @property
     def DATABASE_URL_asyncpg(self):
         return f'postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}'

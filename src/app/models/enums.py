@@ -10,6 +10,7 @@ class TaskStatus(Enum):
     InProgress = 3
     Completed = 4
     Canceled = 5
+    UnsuccessfullCompleted=6
 
 class TransactionType(Enum):
     Credit = 1

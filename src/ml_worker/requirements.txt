@@ -1,3 +1,4 @@
 pika
 requests
 pydantic
+pydantic-settings
