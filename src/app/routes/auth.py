@@ -3,11 +3,11 @@ from fastapi import APIRouter, status, Depends, HTTPException, Response
 import logging
 from models import User
 from database.database import get_session
-from services.repositories import user as UserService
+from services.repositories import user as UserRepository
 from core.security import hash_password, verify_password
 from DTO.user_create import UserCreate
 from DTO.auth_sign_up import AuthSignup
-from services.repositories import balance as BalanceService
+from services.repositories import balance as BalanceRepository
 
 from models import Roles
 
@@ -23,7 +23,7 @@ auth_route = APIRouter()
     summary="User Registration",
     description="Register a new user with name, login and password")
 async def signup(data: UserCreate, session=Depends(get_session)) -> Dict[str, str]:
-        if UserService.get_user_by_login(data.login, session):
+        if UserRepository.get_user_by_login(data.login, session):
             logger.warning(f"Signup attempt with existing login: {data.login}")
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
@@ -36,8 +36,8 @@ async def signup(data: UserCreate, session=Depends(get_session)) -> Dict[str, st
             name=data.name,
             role=Roles.User,
         )
-        UserService.create_user(user, session)
-        BalanceService.add_balance(user.id, session)
+        UserRepository.create_user(user, session)
+        BalanceRepository.add_balance(user.id, session)
         logger.info(f"New user registered: {data.name}")
         return {"message": "User successfully registered"}
 
@@ -47,7 +47,7 @@ async def signup(data: UserCreate, session=Depends(get_session)) -> Dict[str, st
     summary="User Authentification",
     description="Register a new user with name, login and password")
 async def signin(data: AuthSignup, session=Depends(get_session)):
-    user =  UserService.get_user_by_login(data.login, session)
+    user =  UserRepository.get_user_by_login(data.login, session)
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

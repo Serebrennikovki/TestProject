@@ -1,0 +1,2 @@
+class OllamaStreamError(Exception):
+    pass

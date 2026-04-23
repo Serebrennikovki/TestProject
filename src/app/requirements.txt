@@ -12,3 +12,6 @@ argon2-cffi-bindings >= 24.1.0
 uvicorn
 fastapi
 pika
+python-jose >=3.3.0
+jinja2
+python-multipart

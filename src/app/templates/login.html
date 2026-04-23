@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Вход{% endblock %}
+{% block content %}
+  <h1>Вход</h1>
+  {% if error %}<p class="error">{{ error }}</p>{% endif %}
+  {% if request.query_params.get('registered') %}
+    <p class="success">Аккаунт создан, войдите</p>
+  {% endif %}
+  <form action="/ui/login" method="post">
+    <input name="username" placeholder="Логин" required>
+    <input name="password" type="password" placeholder="Пароль" required>
+    <button type="submit">Войти</button>
+  </form>
+  <a href="/register">Нет аккаунта?</a>
+{% endblock %}

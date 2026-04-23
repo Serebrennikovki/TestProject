@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Сервис{% endblock %}</title>
+</head>
+<body>
+  {% if user is defined and user %}
+  <nav>
+    <span>{{ user.username }}</span>
+    <span>Баланс: {{ balance }} ₽</span>
+    <form action="/ui/logout" method="post" style="display:inline">
+      <button type="submit">Выйти</button>
+    </form>
+  </nav>
+  {% endif %}
+  <main>{% block content %}{% endblock %}</main>
+</body>
+</html>

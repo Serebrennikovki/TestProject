@@ -1,9 +1,10 @@
-from sys import prefix
 from typing import List
-from services.repositories import transaction as TransactionService
-from services.repositories import user as UserService
+from services.repositories import transaction as TransactionRepository
+from services.repositories import user as UserRepository
 from fastapi import APIRouter, Depends, status, HTTPException
 from models import Transaction
+from services.business_logic import history as HistoryService
+from core.exceptions import HistoryError 
 
 from database.database import get_session
 
@@ -15,7 +16,7 @@ history_route = APIRouter()
     response_model=List[Transaction],
 )
 async def get_history(session=Depends(get_session)):
-    return TransactionService.get_all_transactions(session)
+    return TransactionRepository.get_all_transactions(session)
 
 @history_route.get(
     "/{user_login}",
@@ -23,8 +24,8 @@ async def get_history(session=Depends(get_session)):
     response_model=List[Transaction],
 )
 async def get_history(user_login:str, session=Depends(get_session)):
-    user = UserService.get_user_by_login(user_login, session)
-    if user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-
-    return TransactionService.get_all_transactions_by_user(user.id, session)
+    try:
+        history = HistoryService.get_history(user_login, session)
+    except HistoryError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    return history

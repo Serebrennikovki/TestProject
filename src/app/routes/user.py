@@ -1,5 +1,5 @@
 import logging
-from services.repositories import user as UserService
+from services.repositories import user as UserRepository
 
 from fastapi import APIRouter, Depends, HTTPException,status
 from DTO.user_response import UserResponse
@@ -15,7 +15,7 @@ user_route = APIRouter()
     status_code = status.HTTP_200_OK,
     response_model = UserResponse)
 async def get_user(user_login: str, session=Depends(get_session)) -> UserResponse:
-    user = UserService.get_user_by_login(user_login, session)
+    user = UserRepository.get_user_by_login(user_login, session)
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
     userResponse = UserResponse(

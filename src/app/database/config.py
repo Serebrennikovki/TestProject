@@ -19,6 +19,8 @@ class Settings(BaseSettings):
     RABBITMQ_HOST: Optional[str] = None
     RABBITMQ_PORT: Optional[int] = None
 
+    COOKIE_NAME: Optional[str] = None
+
     @property
     def DATABASE_URL_asyncpg(self):
         return f'postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}'

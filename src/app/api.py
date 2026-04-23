@@ -9,6 +9,7 @@ from routes.user import user_route
 from routes.balance import balance_route
 from routes.home import home_route
 from routes.predict import predict_route
+from gui.auth import web_router
 
 from database.database import init_db
 from routes.history import history_route
@@ -45,6 +46,7 @@ def create_application() -> FastAPI:
     app.include_router(home_route, prefix="/api/home", tags=["Home"])
     app.include_router(history_route, prefix="/api/history", tags=["History"])
     app.include_router(queue_route, prefix="/api/queue", tags=["Queue"])
+    app.include_router(web_router, tags=["Web"])
 
     return app
 

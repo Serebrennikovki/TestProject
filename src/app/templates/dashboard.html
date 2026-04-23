@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}Личный кабинет{% endblock %}
+{% block content %}
+  <h1>Привет, {{ user.username }}</h1>
+
+  <section>
+    <h2>Пополнить баланс</h2>
+    <form action="/balance/deposit" method="post">
+      <input name="amount" type="number" min="1" placeholder="Сумма">
+      <button type="submit">Пополнить</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Сделать запрос к модели</h2>
+    <form action="/predict" method="post">
+      <textarea name="prompt" placeholder="Введите запрос..."></textarea>
+      <button type="submit">Отправить</button>
+    </form>
+  </section>
+
+  <section>
+  <h2>ML задачи</h2>
+
+  <table class="ml-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Входные данные</th>
+        <th>Ответ</th>
+        <th>Статус</th>
+        <th>Цена</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for task in mlHistory %}
+        <tr>
+          <td>{{ task.id }}</td>
+          <td >{{ task.input_data }}</td>
+          <td >
+            {% if task.answer %}
+              {{ task.answer }}
+            {% else %}
+              <span >—</span>
+            {% endif %}
+          </td>
+          <td>
+            <span>
+              {{ task.status }}
+            </span>
+          </td>
+          <td>{{ task.price }}</td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="6">Задач пока нет</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+
+
+ <section>
+  <h2>История транзакций</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Тип</th>
+        <th>Стоимость</th>
+        <th>Статус</th>
+        <th>Дата</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for item in history %}
+        <tr>
+          <td>{{ item.type }}</td>
+          <td>{{ item.cost }}</td>
+          <td>{{ item.status }}</td>
+          <td>{{ item.date }}</td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="4">Запросов пока нет</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+
+<section>
+  <h1>🚀 ML Service Platform</h1>
+
+  <p>
+    Платформа для запуска ML задач, управления балансом и просмотра истории операций.
+  </p>
+</section>
+
+<hr>
+
+<section>
+  <h2>📦 Возможности</h2>
+
+  <ul>
+    <li>🤖 Отправка ML задач</li>
+    <li>💰 Пополнение и управление балансом</li>
+    <li>📜 История операций</li>
+    <li>📊 Мониторинг статусов задач</li>
+  </ul>
+</section>
+
+<hr>
+
+<section>
+  <h2>⚡ Быстрый старт</h2>
+
+  {% if not user %}
+    <p>Чтобы начать, войдите в систему:</p>
+    <a href="/login">➡ Перейти к логину</a>
+  {% else %}
+    <p>Вы вошли как <b>{{ user.username }}</b></p>
+    <a href="/dashboard">➡ Перейти в дашборд</a>
+  {% endif %}
+</section>
+
+<hr>
+
+<section>
+  <h2>📡 API</h2>
+  <p>Сервис также доступен через REST API для ML интеграций.</p>
+</section>
+
+{% endblock %}
