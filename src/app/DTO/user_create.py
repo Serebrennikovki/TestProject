@@ -1,4 +1,4 @@
-from pydantic import BaseModel, field_validator, ValidationError
+from pydantic import BaseModel, field_validator
 
 
 class UserCreate(BaseModel):
@@ -10,19 +10,19 @@ class UserCreate(BaseModel):
     @classmethod
     def validate_login(cls, value):
         if value == '':
-            raise ValidationError('Поле login не может быть пустым')
+            raise ValueError('Поле login не может быть пустым')
         return value
 
     @field_validator('password')
     @classmethod
     def validate_password(cls, value):
         if value == '':
-            raise ValidationError('Поле password не может быть пустым')
+            raise ValueError('Поле password не может быть пустым')
         return value
 
     @field_validator('name')
     @classmethod
     def validate_name(cls, value):
         if value == '':
-            raise ValidationError('Поле name не может быть пустым')
+            raise ValueError('Поле name не может быть пустым')
         return value

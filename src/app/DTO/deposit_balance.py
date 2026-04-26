@@ -11,12 +11,12 @@ class DepositBalance(BaseModel):
     @classmethod
     def validate_login(cls, value):
         if value == '':
-            raise ValidationError('Поле user_login не может быть пустым')
+            raise ValueError('Поле user_login не может быть пустым')
         return value
 
     @field_validator('amount')
     @classmethod
     def validate_password(cls, value):
         if value <= 0:
-            raise ValidationError('Поле amount должно быть положительным')
+            raise ValueError('Поле amount должно быть положительным')
         return value

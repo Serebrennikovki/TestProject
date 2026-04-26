@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import ValidationError, BaseModel, field_validator
+from pydantic import BaseModel, field_validator
 
 class MlTaskUpdateRequestSimple(BaseModel):
     id: int
@@ -11,5 +11,5 @@ class MlTaskUpdateRequestSimple(BaseModel):
     @classmethod
     def validate_id(cls, value):
         if value < 0:
-            raise ValidationError('Поле id не может быть отрицательным')
+            raise ValueError('Поле id не может быть отрицательным')
         return value

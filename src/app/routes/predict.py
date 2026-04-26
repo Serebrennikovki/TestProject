@@ -1,8 +1,10 @@
 from datetime import datetime
 from decimal import Decimal
 import logging
+from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 
+from models.ml_task import MlTask
 from services.queue.rabbitmq_connector import send_to_queue
 from DTO.ml_task_create_request import MlTaskCreateRequest
 from database.database import get_session
@@ -22,7 +24,7 @@ logger = logging.getLogger(__file__)
     response_model = int)
 async def predict(data: MlTaskCreateRequest, session=Depends(get_session)):
     try:
-        task_id = PredictService.create_prediction(data, session)
+        task_id = PredictService.add_prediction(data, session)
     except PredictionError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
@@ -51,3 +53,15 @@ async def update_predict(data: MlTaskUpdateRequestSimple, session=Depends(get_se
         raise HTTPException(status_code=404, detail=str(e))
 
     return task_id
+
+@predict_route.get(
+    "/{user_login}",
+    status_code=status.HTTP_200_OK,
+    response_model = List[MlTask])
+async def predict(user_login: str, session=Depends(get_session)):
+    try:
+        tasks = PredictService.get_all_task(user_login, session)
+    except PredictionError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+    return tasks

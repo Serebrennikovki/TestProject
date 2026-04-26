@@ -39,10 +39,10 @@ def create_application() -> FastAPI:
         allow_headers=["*"]
     )
 
-    app.include_router(user_route, prefix="/api/users", tags=["Users"])
-    app.include_router(balance_route, prefix="/api/balances", tags=["Balance"])
+    app.include_router(user_route, prefix="/api/user", tags=["Users"])
+    app.include_router(balance_route, prefix="/api/balance", tags=["Balance"])
     app.include_router(auth_route, prefix="/api/auth", tags=["Auth"])
-    app.include_router(predict_route, prefix="/api/predicts", tags=["Predict"])
+    app.include_router(predict_route, prefix="/api/predict", tags=["Predict"])
     app.include_router(home_route, prefix="/api/home", tags=["Home"])
     app.include_router(history_route, prefix="/api/history", tags=["History"])
     app.include_router(queue_route, prefix="/api/queue", tags=["Queue"])

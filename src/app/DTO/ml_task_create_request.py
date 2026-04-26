@@ -1,4 +1,4 @@
-from pydantic import ValidationError, field_validator, BaseModel
+from pydantic import field_validator, BaseModel
 
 
 class MlTaskCreateRequest(BaseModel):
@@ -9,12 +9,12 @@ class MlTaskCreateRequest(BaseModel):
     @classmethod
     def validate_input_data(cls, value):
         if value == '':
-            raise ValidationError('Поле input_data не может быть пустым')
+            raise ValueError('Поле input_data не может быть пустым')
         return value
 
     @field_validator('user_login')
     @classmethod
     def validate_password(cls, value):
         if value == '':
-            raise ValidationError('Поле user_login не может быть пустым')
+            raise ValueError('Поле user_login не может быть пустым')
         return value
