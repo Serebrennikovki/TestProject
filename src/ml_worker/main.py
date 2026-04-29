@@ -9,7 +9,7 @@ from task_response import TaskResponse
 from handle_ollama import ollama_stream_to_string
 
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 
@@ -37,13 +37,13 @@ channel.queue_declare(queue=queue_name)  # Создание очереди (ес
 channel.basic_qos(prefetch_count=1)  # берем по 1 задаче
 
 def send_answer_positive(request:TaskRequest, answer: str):
-    url =f'http://{settings.HOST_APP}:8080/api/predicts/update/positive'
+    url =f'http://{settings.HOST_APP}:8080/api/predict/update/positive'
     resp = TaskResponse(id=request.id, answer=answer)
     response=requests.post(url, json=resp.model_dump())
     logger.info(f'Sending response  {response}')
 
 def send_answer_negative(request:TaskRequest):
-    url =f'http://{settings.HOST_APP}:8080/api/predicts/update'
+    url =f'http://{settings.HOST_APP}:8080/api/predict/update'
     resp = TaskResponse(id=TaskResponse.id)
     response=requests.post(url, json=resp.model_dump())
     logger.info(f'Sending response  {response}')
